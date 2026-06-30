@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.log
+.env
+venv/
+.vscode/
+node_modules/
+.DS_Store
+Thumbs.db
+Desktop.ini

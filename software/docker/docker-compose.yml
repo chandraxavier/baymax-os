@@ -1,0 +1,7 @@
+services:
+  baymax-api:
+    build: ../backend
+    container_name: baymax-api
+    restart: unless-stopped
+    ports:
+      - "8080:8000"

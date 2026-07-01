@@ -1,0 +1,9 @@
+wifi:
+  preferred:
+    - HomeWiFi
+
+hotspot:
+  enabled: true
+
+bluetooth:
+  auto_connect: true

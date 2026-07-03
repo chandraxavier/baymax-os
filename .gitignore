@@ -1,23 +1,69 @@
+# -----------------------------------------------------------------------------
+# Baymax OS - Git Ignore
+# -----------------------------------------------------------------------------
+
 # Python
 **/.venv/
 **/__pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+
+# Build & Packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Testing
 .pytest_cache/
 .coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
 
-# Environment
+# Virtual Environments
 .env
 .env.*
+.python-version
 
-# VS Code
-.vscode/settings.json
+# IDE
 .vscode/
+.idea/
 
-# macOS
+# OS
 .DS_Store
+Thumbs.db
 
 # Logs
 *.log
+logs/
+*.pid
 
-# Python cache
-*.pyo
+# Runtime
+*.sock
+*.sqlite3
+
+# Temporary
+*.tmp
+*.swp
+*.swo
+*~
+
+# Docker
+docker-compose.override.yml
+
+# Baymax Secrets
+secrets/
+certificates/
+keys/
+
+# Raspberry Pi
+*.img
+*.iso
+
+# Node (Future Dashboard)
+node_modules/
+npm-debug.log*
+yarn-error.log*
+

@@ -11,6 +11,7 @@ import yaml
 from baymax.core.configuration.models import Configuration
 from baymax.core.configuration.validator import ConfigurationValidator
 
+
 class ConfigurationLoader:
     """Loads Baymax configuration from YAML files."""
 

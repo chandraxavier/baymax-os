@@ -7,7 +7,10 @@ from __future__ import annotations
 from pathlib import Path
 
 from baymax.core.configuration.loader import ConfigurationLoader
-from baymax.core.configuration.models import Configuration
+from baymax.core.configuration.models import (
+    Configuration,
+    SystemConfig,
+)
 
 
 class ConfigurationManager:

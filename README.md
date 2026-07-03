@@ -1,32 +1,49 @@
-# 🚗 Baymax OS
+# Baymax OS
 
-> **An Open Source Smart Vehicle Platform powered by Raspberry Pi**
+Baymax OS is an open-source automotive operating system for a 2013 Suzuki Ritz
+VDi ABS.
 
 ## Vision
 
-Baymax OS transforms a Raspberry Pi into a modular in-vehicle computer capable of diagnostics, automation, AI assistance, and smart home integration.
+Baymax OS is not a Raspberry Pi dashboard. It is a modular automotive runtime
+for diagnostics, automation, driver assistance, vehicle UI, and future hardware
+integrations.
 
 Part of **Thyana Labs**.
 
-## Features
+## Current Hardware
 
-- 🚗 OBD-II Vehicle Diagnostics
-- 📊 Real-time Dashboard
-- 🎤 Voice Assistant
-- 📷 Camera Integration
-- 📡 ESP32 Sensor Network
-- 🏠 Home Assistant Integration
-- 🤖 AI Vision (Planned)
-- ☁️ Cloud Sync (Planned)
+- Raspberry Pi 4, 8GB
+- Amazon Fire HD Tablet
+- ESP32
+- Pioneer SPH-C19BT
+- Bluetooth OBD-II
+
+## Architecture
+
+The platform is built around:
+
+- Runtime Engine
+- RuntimeContext
+- Configuration Manager
+- Logging foundation
+- Event Bus
+- Service Manager
+- Guardian
+- Hardware Abstraction Layer
+
+See `ARCHITECTURE.md` and `docs/architecture/` for the current architecture
+record.
 
 ## Technology Stack
 
 | Layer | Technology |
 |--------|------------|
 | OS | Raspberry Pi OS Lite |
-| Backend | Python + FastAPI |
-| Frontend | React |
-| Messaging | MQTT |
+| Core Runtime | Python 3.13 |
+| Backend | FastAPI |
+| Frontend | Web UI |
+| Messaging | Event Bus, MQTT |
 | Database | SQLite |
 | Containers | Docker |
 | Vision | OpenCV |
@@ -35,20 +52,14 @@ Part of **Thyana Labs**.
 ## Repository Structure
 
 ```
+baymax/
 docs/
-hardware/
 software/
-raspberrypi/
-firmware/
-mobile/
-assets/
-testing/
-tools/
 ```
 
 ## Roadmap
 
-See ROADMAP.md
+See `ROADMAP.md`.
 
 ## License
 

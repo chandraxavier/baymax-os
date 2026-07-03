@@ -1,7 +1,7 @@
 """
-Baymax OS Service Interface
+Baymax OS Service Contract
 
-Defines the contract implemented by every Baymax service.
+Defines the abstract base class implemented by every Baymax OS service.
 """
 
 from __future__ import annotations
@@ -9,54 +9,63 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Sequence
 
+from baymax.core.runtime.context import RuntimeContext
 
-class ServiceInterface(ABC):
-    """
-    Base interface for all Baymax services.
 
-    Every service managed by the Runtime Engine must implement
-    this interface.
+class BaymaxService(ABC):
     """
+    Abstract base class for every Baymax OS service.
+
+    All services managed by the Runtime Engine must inherit from this class.
+    """
+
+    def __init__(self, context: RuntimeContext) -> None:
+        self._context = context
 
     @property
     @abstractmethod
     def name(self) -> str:
         """Unique service name."""
-        raise NotImplementedError
+        ...
 
     @property
     @abstractmethod
     def version(self) -> str:
-        """Service version."""
-        raise NotImplementedError
+        """Semantic version of the service."""
+        ...
 
     @property
     @abstractmethod
     def dependencies(self) -> Sequence[str]:
-        """Names of services required before this service starts."""
-        raise NotImplementedError
+        """Services that must start before this service."""
+        ...
+
+    @property
+    def context(self) -> RuntimeContext:
+        """Shared runtime context."""
+        return self._context
 
     @abstractmethod
     async def initialize(self) -> None:
-        """Initialize the service."""
-        raise NotImplementedError
+        """Initialize resources."""
+        ...
 
     @abstractmethod
     async def start(self) -> None:
         """Start the service."""
-        raise NotImplementedError
+        ...
 
     @abstractmethod
     async def stop(self) -> None:
         """Stop the service."""
-        raise NotImplementedError
+        ...
 
     @abstractmethod
     async def shutdown(self) -> None:
-        """Shutdown and release resources."""
-        raise NotImplementedError
+        """Release resources and perform cleanup."""
+        ...
 
     @abstractmethod
     async def health(self) -> dict:
-        """Return the service health."""
-        raise NotImplementedError
+        """Return current service health information."""
+        ...

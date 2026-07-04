@@ -203,15 +203,26 @@ class RuntimeEngine:
             new_state=new_state.value,
         )
 
-
 def main() -> int:
-    """Run a boot/shutdown smoke cycle for local validation."""
+    """Run the Baymax Runtime."""
+
+    import time
 
     engine = RuntimeEngine(config_root=Path("config"))
-    engine.boot()
-    engine.shutdown()
-    return 0
 
+    try:
+        engine.boot()
+
+        while True:
+            time.sleep(1)
+
+    except KeyboardInterrupt:
+        pass
+
+    finally:
+        engine.shutdown()
+
+    return 0
 
 if __name__ == "__main__":
     raise SystemExit(main())

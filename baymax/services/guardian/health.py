@@ -11,40 +11,6 @@ Guardian uses these health reports for:
 - Diagnostics
 """
 
-from enum import Enum
-from dataclasses import dataclass
-from datetime import datetime
-from typing import Optional
+from baymax.core.health.models import HealthReport, HealthStatus
 
-
-class HealthStatus(str, Enum):
-    """Standard health states."""
-
-    UNKNOWN = "unknown"
-
-    HEALTHY = "healthy"
-
-    WARNING = "warning"
-
-    DEGRADED = "degraded"
-
-    UNHEALTHY = "unhealthy"
-
-
-@dataclass
-class HealthReport:
-    """Health information returned by every Baymax service."""
-
-    service: str
-
-    status: HealthStatus
-
-    message: str = ""
-
-    last_updated: Optional[datetime] = None
-
-    uptime_seconds: int = 0
-
-    version: str = ""
-
-    details: dict | None = None
+__all__ = ["HealthReport", "HealthStatus"]

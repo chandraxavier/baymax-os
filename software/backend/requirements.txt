@@ -4,3 +4,4 @@ psutil
 pydantic
 PyYAML
 python-dotenv
+structlog

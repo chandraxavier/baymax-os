@@ -29,6 +29,8 @@ class RuntimeContext:
     logger: Any | None = None
     events: Any | None = None
     registry: Any | None = None
+    service_manager: Any | None = None
+    health: Any | None = None
 
     runtime_id: str = field(default_factory=lambda: str(uuid4()))
     boot_time: datetime = field(

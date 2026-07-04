@@ -3,11 +3,8 @@ Baymax Guardian State Machine
 
 This module defines the operating states of Baymax OS.
 
-The state machine is the single source of truth for the lifecycle of the
-Baymax operating system. Guardian transitions between these states based on
-system events, health checks, and user actions.
-
-Implementation will be added in a later sprint.
+Guardian transitions between these states based on runtime events, health
+checks, and shutdown requests.
 """
 
 from enum import Enum
@@ -43,5 +40,5 @@ class GuardianState(str, Enum):
     SHUTTING_DOWN = "shutting_down"
 
     REBOOTING = "rebooting"
-    
+
     POWERING_OFF = "powering_off"

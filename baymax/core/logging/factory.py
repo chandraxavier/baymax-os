@@ -1,63 +1,75 @@
 """
-Logging factory for Baymax OS core services.
+Structured logging factory for Baymax OS.
 """
 
 from __future__ import annotations
 
 import logging
+import sys
 from pathlib import Path
 
-
-LOG_FORMAT = (
-    "%(asctime)s %(levelname)s [%(name)s] "
-    "service=%(baymax_service)s %(message)s"
-)
-
-
-class BaymaxServiceFilter(logging.Filter):
-    """Ensure all log records contain a service field."""
-
-    def filter(self, record: logging.LogRecord) -> bool:
-        if not hasattr(record, "baymax_service"):
-            record.baymax_service = record.name
-        return True
+import structlog
 
 
 def configure_logging(
     level: str = "INFO",
     log_directory: Path | None = None,
-) -> logging.Logger:
+    json_logging: bool = True,
+) -> structlog.stdlib.BoundLogger:
     """
-    Configure the Baymax root logger.
+    Configure structured logging for Baymax OS.
 
-    The logger writes structured, service-aware records to stderr by default.
-    A file handler is added when ``log_directory`` is supplied.
+    Runtime and services use structlog loggers with stable event names and
+    key-value fields. A file handler is added when ``log_directory`` is
+    supplied by configuration.
     """
 
-    root_logger = logging.getLogger("baymax")
-    root_logger.setLevel(_resolve_level(level))
-    root_logger.handlers.clear()
-    root_logger.propagate = False
-
-    formatter = logging.Formatter(LOG_FORMAT)
-    service_filter = BaymaxServiceFilter()
-
-    stream_handler = logging.StreamHandler()
-    stream_handler.setFormatter(formatter)
-    stream_handler.addFilter(service_filter)
-    root_logger.addHandler(stream_handler)
+    resolved_level = _resolve_level(level)
+    handlers: list[logging.Handler] = [logging.StreamHandler(sys.stdout)]
 
     if log_directory is not None:
         log_directory.mkdir(parents=True, exist_ok=True)
-        file_handler = logging.FileHandler(
-            log_directory / "baymax.log",
-            encoding="utf-8",
+        handlers.append(
+            logging.FileHandler(
+                log_directory / "baymax.log",
+                encoding="utf-8",
+            )
         )
-        file_handler.setFormatter(formatter)
-        file_handler.addFilter(service_filter)
-        root_logger.addHandler(file_handler)
 
-    return root_logger
+    logging.basicConfig(
+        format="%(message)s",
+        handlers=handlers,
+        level=resolved_level,
+        force=True,
+    )
+
+    renderer = (
+        structlog.processors.JSONRenderer()
+        if json_logging
+        else structlog.dev.ConsoleRenderer(colors=False)
+    )
+
+    structlog.configure(
+        processors=[
+            structlog.contextvars.merge_contextvars,
+            structlog.stdlib.add_log_level,
+            structlog.processors.TimeStamper(fmt="iso", utc=True),
+            structlog.processors.StackInfoRenderer(),
+            structlog.processors.format_exc_info,
+            renderer,
+        ],
+        wrapper_class=structlog.make_filtering_bound_logger(resolved_level),
+        logger_factory=structlog.stdlib.LoggerFactory(),
+        cache_logger_on_first_use=True,
+    )
+
+    return structlog.get_logger("baymax")
+
+
+def get_logger(name: str) -> structlog.stdlib.BoundLogger:
+    """Return a named Baymax logger."""
+
+    return structlog.get_logger(name)
 
 
 def _resolve_level(level: str) -> int:

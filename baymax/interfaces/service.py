@@ -60,6 +60,12 @@ class BaymaxService(ABC):
         """Stop the service."""
         ...
 
+    async def restart(self) -> None:
+        """Restart the service."""
+
+        await self.stop()
+        await self.start()
+
     @abstractmethod
     async def shutdown(self) -> None:
         """Release resources and perform cleanup."""
@@ -68,4 +74,9 @@ class BaymaxService(ABC):
     @abstractmethod
     async def health(self) -> dict:
         """Return current service health information."""
+        ...
+
+    @abstractmethod
+    async def status(self) -> dict:
+        """Return current service lifecycle status."""
         ...

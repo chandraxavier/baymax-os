@@ -1,0 +1,5 @@
+provider: console
+piper:
+  executable: /usr/bin/piper
+  model: ""
+  output: default

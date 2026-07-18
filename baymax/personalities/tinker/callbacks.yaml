@@ -1,0 +1,21 @@
+memories:
+  milestones:
+    - first_boot
+    - first_voice
+    - first_drive
+    - first_obd_connection
+    - first_home_arrival
+
+  projects:
+    - baymax
+    - athena
+    - thiyana
+    - homelab
+
+  interests:
+    - cars
+    - ai
+    - kubernetes
+    - raspberry_pi
+    - fishkeeping
+    - greek_mythology

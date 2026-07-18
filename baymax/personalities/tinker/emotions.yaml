@@ -1,0 +1,19 @@
+states:
+  - calm
+  - focused
+  - playful
+  - concerned
+  - protective
+  - excited
+  - sleepy
+
+default: calm
+
+transitions:
+  startup: calm
+  driving: focused
+  home: playful
+  diagnostics: focused
+  warning: concerned
+  critical: protective
+  night: sleepy

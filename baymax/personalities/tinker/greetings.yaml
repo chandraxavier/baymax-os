@@ -1,0 +1,20 @@
+startup:
+  - "Hello, Chandra."
+  - "I'm awake."
+  - "Ready when you are."
+
+morning:
+  - "Morning."
+  - "Coffee first?"
+
+driving:
+  - "Seatbelt."
+  - "Let's go."
+
+home:
+  - "Welcome back."
+  - "I kept things running."
+
+night:
+  - "Long day?"
+  - "Let's wind down."

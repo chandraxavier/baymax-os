@@ -1,14 +1,18 @@
 # 🚗 Baymax OS
 
-> **An Open-Source Automotive Operating System**
+> **An Open-Source Automotive Cognitive Operating System**
+
+**Documentation Version:** 2.0  
+**Last Updated:** 2026-07-18  
+**Project Status:** Runtime Foundation Complete
 
 Baymax OS is a production-oriented, open-source automotive operating system designed to transform existing vehicles into intelligent, software-defined platforms.
 
-Inspired by **Tesla OS**, **Android Automotive**, **Mercedes-Benz MBUX**, **Rivian**, **Linux**, and modern distributed systems, Baymax OS provides a modular runtime capable of powering diagnostics, vehicle integrations, AI assistants, automation, and intelligent in-car experiences.
+Inspired by Tesla OS, Android Automotive, Mercedes-Benz MBUX, Rivian, Linux, and modern distributed systems, Baymax OS provides a modular runtime capable of powering diagnostics, vehicle integrations, AI assistants, automation, and intelligent in-car experiences.
 
 > **Baymax OS is NOT a Raspberry Pi dashboard.**
 
-The Raspberry Pi is currently the development platform. The operating system is designed to be hardware-independent and portable to future automotive-grade hardware.
+The Raspberry Pi is currently the primary development platform. Baymax OS is designed to be hardware-independent and portable to future automotive-grade hardware.
 
 ---
 
@@ -16,9 +20,9 @@ The Raspberry Pi is currently the development platform. The operating system is 
 
 Our mission is simple:
 
-> Build the automotive operating system we wish existed.
+> **Build the automotive operating system we wish existed.**
 
-Baymax OS aims to bring modern software engineering practices into older and newer vehicles alike while remaining:
+Baymax OS brings modern software engineering principles to both older and newer vehicles while remaining:
 
 - Privacy First
 - Offline First
@@ -30,13 +34,37 @@ Baymax OS aims to bring modern software engineering practices into older and new
 
 ---
 
+# Baymax Philosophy
+
+Baymax OS is **not** an AI assistant.
+
+Baymax OS is an **Automotive Cognitive Operating System**.
+
+Its purpose is to augment the driver—not replace them.
+
+Every subsystem follows these principles:
+
+- Human in control
+- AI assists, never overrides
+- Explainable decisions
+- Offline by default
+- Privacy by design
+- Modular architecture
+- Safety before convenience
+
+Baymax makes decisions through its **Planner**, executes work through **Skills**, and interacts with the vehicle through **Drivers**.
+
+Large Language Models provide recommendations—not direct control of vehicle hardware.
+
+---
+
 # Current Development Vehicle
 
-**Vehicle**
+## Vehicle
 
 - 2013 Suzuki Ritz VDi ABS
 
-Current Development Hardware
+## Development Hardware
 
 - Raspberry Pi 4 (8GB)
 - Amazon Fire HD Tablet
@@ -51,7 +79,7 @@ Current Development Hardware
 
 Baymax OS is designed to scale beyond Raspberry Pi.
 
-Future hardware includes:
+Planned hardware includes:
 
 - Automotive-grade SBC
 - CAN Bus Interface
@@ -77,11 +105,11 @@ Every capability is implemented as an independent service.
 
 ## Event Driven
 
-Services communicate through an Event Bus rather than directly calling each other.
+Services communicate through the Event Bus.
 
-## Hardware Agnostic
+## Hardware Independent
 
-Vehicle-specific hardware is isolated behind the Hardware Abstraction Layer (HAL).
+Vehicle hardware is isolated behind dedicated drivers.
 
 ## Offline First
 
@@ -91,31 +119,108 @@ The vehicle remains fully functional without Internet connectivity.
 
 Vehicle and user data remain local unless explicitly shared.
 
+## Documentation First
+
+Documentation is considered part of the implementation.
+
+A feature is not complete until its documentation has been updated.
+
 ---
 
 # Architecture
 
 ```
-                 Baymax OS
+                         Baymax OS
 
-              Runtime Engine
-                     │
-     ┌───────────────┼────────────────┐
-     │               │                │
- Configuration    Logging       Runtime Context
-                     │
-             Service Manager
-                     │
-     ┌───────────────┼────────────────────────────┐
-     │               │            │               │
- Guardian       Event Bus     Health       Vehicle HAL
-     │               │            │
-     ├───────────────┼────────────┤
-     │               │            │
- Dashboard        Pulse       Lighting
- Bluetooth        OBD-II      Cameras
- Home Assistant   Plugins     OTA
+                      Runtime Engine
+                            │
+                ┌───────────┼────────────┐
+                │           │            │
+         Configuration   Logging   Runtime Context
+                            │
+                     Service Manager
+                            │
+        ┌───────────────────┼───────────────────┐
+        │                   │                   │
+    Guardian            Planner            Skills
+        │                   │                   │
+        └─────────────── Event Bus ─────────────┘
+                            │
+                           Tasks
+                            │
+         ┌─────────────┬─────────────┬─────────────┐
+         │             │             │             │
+      Speech         OBD-II     Navigation    Lighting
+                            │
+                      Hardware Drivers
+                            │
+              Raspberry Pi / CAN / ESP32
 ```
+
+---
+
+# Runtime Boot Sequence
+
+```
+Power On
+   │
+Linux
+   │
+Baymax Runtime
+   │
+Load Configuration
+   │
+Initialize Logging
+   │
+Create Runtime Context
+   │
+Create Event Bus
+   │
+Create Health Manager
+   │
+Create Service Manager
+   │
+Register Core Services
+   │
+Start Guardian
+   │
+Start Planner
+   │
+Start Skills
+   │
+Runtime Ready
+```
+
+---
+
+# Current Runtime
+
+The Baymax Runtime currently consists of three core services.
+
+## Guardian
+
+Responsible for runtime supervision, lifecycle management and system coordination.
+
+## Planner
+
+Responsible for decision making and task orchestration.
+
+The Planner decides **what** should happen.
+
+## Skills
+
+Responsible for executing capabilities requested by the Planner.
+
+Skills perform the work.
+
+Future skills include:
+
+- Speech
+- Navigation
+- OBD-II
+- Cameras
+- Lighting
+- Notifications
 
 ---
 
@@ -125,24 +230,30 @@ Vehicle and user data remain local unless explicitly shared.
 baymax-os/
 
 ├── baymax/
-│   ├── core/
-│   │   ├── configuration/
-│   │   ├── runtime/
-│   │   ├── logging/
-│   │   ├── eventbus/
-│   │   ├── health/
-│   │   └── service_manager/
-│   │
-│   ├── services/
-│   │   └── guardian/
-│   │
-│   ├── hal/
-│   │
-│   └── shared/
+│
+├── core/
+│   ├── configuration/
+│   ├── runtime/
+│   ├── logging/
+│   ├── eventbus/
+│   ├── health/
+│   └── service_manager/
+│
+├── services/
+│   ├── guardian/
+│   ├── planner/
+│   └── skills/
+│
+├── drivers/
+│
+├── hal/
+│
+├── shared/
 │
 ├── docs/
 │   ├── architecture/
-│   └── adr/
+│   ├── adr/
+│   └── development/
 │
 ├── firmware/
 ├── hardware/
@@ -151,181 +262,130 @@ baymax-os/
 
 ---
 
-# Runtime Boot Sequence
-
-```
-Power On
-
-↓
-
-Linux
-
-↓
-
-Baymax Runtime
-
-↓
-
-Load Configuration
-
-↓
-
-Initialize Logging
-
-↓
-
-Create Runtime Context
-
-↓
-
-Start Event Bus
-
-↓
-
-Create Service Manager
-
-↓
-
-Register Core Services
-
-↓
-
-Start Guardian
-
-↓
-
-Runtime Ready
-```
-
----
-
 # Current Status
 
-## Sprint 1
+## Runtime Foundation
 
-Runtime Foundation
+Completed
 
 - Runtime Engine
 - Configuration
 - Runtime Context
-- Logging
-- Service Manager
+- Structured Logging
 - Event Bus
 - Health Manager
-- Guardian Foundation
+- Service Manager
+- Guardian Runtime
+- Planner Runtime
+- Skills Runtime
+- Event-driven Service Lifecycle
+- Graceful Runtime Shutdown
 
-🚧 In Progress
+## Current Milestone
+
+Task Execution Pipeline
+
+Planner → Task → Skills
 
 ---
 
 # Roadmap
 
-## Sprint 1
+## Phase 1
 
-Runtime Foundation
+Runtime Foundation ✅
 
-## Sprint 2
+## Phase 2
 
-Core Platform
+Task Pipeline
 
-- Event Bus
-- Health Manager
-- Dependency Injection
-- Plugin Framework
+- Task Model
+- Task Dispatcher
+- Task Queue
 
-## Sprint 3
+## Phase 3
 
-Guardian Platform
+Core Skills
 
-- Runtime Supervision
-- Health Monitoring
-- Watchdog
-- Backend APIs
+- Speech
+- Notifications
+- Diagnostics
 
-## Sprint 4
+## Phase 4
 
-Vehicle HAL
+Vehicle Integration
 
 - OBD-II
 - CAN
 - Sensors
-- Vehicle Data
 
-## Sprint 5
+## Phase 5
 
-Dashboard
+Companion Experience
 
-- Fire HD UI
-- Navigation
-- Media
-- Vehicle Status
+- Fire HD Dashboard
+- Mobile Companion
+- Bluetooth
 
-## Sprint 6
+## Phase 6
 
-Baymax Pulse
+AI Platform
 
 - Voice Assistant
+- Memory
+- Local AI
 - Wake Word
-- AI Responses
-- TTS / STT
 
-## Sprint 7
+## Phase 7
 
-AI Vision
+Vision
 
 - Dashcam
 - Driver Monitoring
-- Lane Detection
-- Object Recognition
+- Object Detection
 
-## Sprint 8
+## Phase 8
 
-Ambient Lighting
+Vehicle Intelligence
 
-- ESP32
-- Smart Lighting
-- Vehicle Events
-- AI Expressions
-
-## Sprint 9
-
-Connectivity
-
-- Home Assistant
-- MQTT
-- OTA
-- Mobile Companion
-
-## Sprint 10
-
-Production Release
-
-- Installer
-- Packaging
-- Documentation
-- Stable Release
+- Ambient Lighting
+- Automation
+- Predictive Diagnostics
 
 ---
 
 # Development Workflow
 
 ```
-main
-│
-├── Stable Releases
-
-develop
-│
-├── Integration Branch
-
-for_dev
-│
-├── Active Development
-
-feature/*
-│
-└── Experimental Features
+Documentation
+      │
+Architecture
+      │
+Implementation
+      │
+Testing
+      │
+Documentation Review
+      │
+Commit
 ```
+
+---
+
+# Engineering Rules
+
+Every feature merged into Baymax OS must include:
+
+- Documentation updates
+- Architecture review (when required)
+- Testing
+- Structured logging
+- Type hints
+- Graceful startup
+- Graceful shutdown
+- Event-driven communication
+
+Direct hardware access is not permitted outside dedicated drivers.
 
 ---
 
@@ -333,7 +393,6 @@ feature/*
 
 - Python 3.13
 - Debian Linux
-- Raspberry Pi OS
 - Docker
 - FastAPI
 - MQTT
@@ -344,49 +403,24 @@ feature/*
 
 ---
 
-# Development Standards
-
-Baymax OS follows modern engineering practices.
-
-- PEP8
-- Type Hints
-- Structured Logging
-- Production Docstrings
-- Dependency Injection
-- Modular Services
-- Event-Driven Design
-- Comprehensive Documentation
-
-Every feature should include:
-
-- Code
-- Documentation
-- Architecture Updates
-- Testing
-
----
-
 # Contributing
-
-Contributions are welcome.
 
 Please ensure:
 
-- Code is documented.
+- Documentation is updated.
 - Architecture remains modular.
 - Services remain loosely coupled.
-- Documentation is updated with every feature.
-- Pull Requests target the correct development branch.
+- Pull requests target the correct branch.
+- Engineering principles are maintained.
 
 ---
 
 # Documentation
 
-Additional documentation is available in:
-
 ```
 docs/architecture/
 docs/adr/
+docs/development/
 ```
 
 ---
@@ -415,6 +449,6 @@ Baymax OS is inspired by the engineering excellence of:
 
 Baymax OS began as a personal project to modernize a 2013 Suzuki Ritz.
 
-Today, it is evolving into a modular automotive operating system designed to demonstrate that older vehicles can benefit from modern software architecture without sacrificing reliability, privacy, or openness.
+It is evolving into a modular Automotive Cognitive Operating System designed to demonstrate that existing vehicles can benefit from modern software architecture without sacrificing reliability, privacy, safety or openness.
 
-**Welcome to Baymax OS.**
+Every commit brings Baymax one step closer to becoming a production-grade automotive operating system.

@@ -16,6 +16,11 @@ from baymax.core.runtime.lifecycle import RuntimeLifecycle
 from baymax.core.runtime.state import RuntimeState
 from baymax.core.service_manager import ServiceManager, ServiceRegistry
 from baymax.services.guardian.runtime import GuardianRuntime
+from baymax.services.audio.runtime import AudioRuntime
+from baymax.services.device.runtime import DeviceRuntime
+from baymax.services.vehicle.runtime import VehicleRuntime
+from baymax.services.voice.runtime import VoiceRuntime
+from baymax.services.tts.runtime import TTSRuntime
 
 
 class RuntimeEngine:
@@ -191,6 +196,11 @@ class RuntimeEngine:
         """Register core services owned by the Runtime Engine."""
 
         self.service_manager.register(GuardianRuntime(self.context))
+        self.service_manager.register(DeviceRuntime(self.context))
+        self.service_manager.register(VehicleRuntime(self.context))
+        self.service_manager.register(AudioRuntime(self.context))
+        self.service_manager.register(VoiceRuntime(self.context))
+        self.service_manager.register(TTSRuntime(self.context))
 
     def _transition(self, new_state: RuntimeState) -> None:
         """Apply and log a runtime lifecycle transition."""

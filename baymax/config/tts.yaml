@@ -1,5 +1,5 @@
-provider: console
+provider: piper
 piper:
-  executable: /usr/bin/piper
-  model: ""
+  executable: /usr/local/bin/piper
+  model: /home/pi/baymax-os/models/piper/en_US-lessac-medium.onnx
   output: default

@@ -15,3 +15,8 @@ def boot_runtime(config_root: Path) -> RuntimeContext:
 
     engine = RuntimeEngine(config_root=config_root)
     return engine.boot()
+
+if __name__ == "__main__":
+    from pathlib import Path
+
+    boot_runtime(Path("."))
